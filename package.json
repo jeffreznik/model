@@ -19,6 +19,7 @@
     "babel-preset-es2015": "^6.24.1"
   },
   "dependencies": {
+    "@jeffreznik/error": "^0.1.0",
     "validate.js": "^0.11.1"
   }
 }
