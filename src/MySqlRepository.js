@@ -3,7 +3,6 @@ import { GeneralError } from '@jeffreznik/error'
 
 class MySqlRepository {
   constructor(modelClass, tableName) {
-    this.db = mysql.getConnection()
     this.modelClass = modelClass
     this.tableName = tableName
   }
@@ -11,7 +10,7 @@ class MySqlRepository {
   async find(attributes, raw = false) {
     const sql = `select * from ${this.tableName} where ${this.__filterAttributes(attributes).join(' and ')}`
     try {
-      const db = await this.db
+      const db = await mysql.getConnection()
       const [results] = await db.query(sql, attributes)
       return results.map(row => {
         for (const attr in row) {
@@ -71,7 +70,7 @@ class MySqlRepository {
       (${this.modelClass.writableAttributes.join()}) values
       (${namedParameters.join()})`
 
-    const db = await this.db
+    const db = await mysql.getConnection()
     const [result] = await db.query(sql, this.__convertValues(model))
     return result.insertId
   }
@@ -80,7 +79,7 @@ class MySqlRepository {
     const updateFields = this.modelClass.writableAttributes.map(attr => `${attr}=:${attr}`)
     const sql = `update ${this.tableName} set ${updateFields.join()} where id=:id`
 
-    const db = await this.db
+    const db = await mysql.getConnection()
     const [result] = await db.query(sql, this.__convertValues(model))
     return result.affectedRows
   }
