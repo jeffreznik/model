@@ -21,8 +21,10 @@
   },
   "dependencies": {
     "@jeffreznik/error": "^0.1.0",
-    "@jeffreznik/utils": "^0.1.0",
     "http-status-codes": "^1.1.6",
     "validate.js": "^0.11.1"
+  },
+  "peerDependencies": {
+    "@jeffreznik/utils": "^0.1.0"
   }
 }
