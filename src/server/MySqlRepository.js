@@ -1,4 +1,4 @@
-import { mysql } from '@jeffreznik/utils'
+import { mysql } from '@jeffreznik/utils/server'
 import { GeneralError } from '@jeffreznik/error'
 
 class MySqlRepository {
