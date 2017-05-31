@@ -1,6 +1,6 @@
 {
   "name": "@jeffreznik/model",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A model repository library with validation and different repository adapters, for use on both the client and server",
   "main": "./lib/index.js",
   "scripts": {
