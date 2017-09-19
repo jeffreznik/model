@@ -64,18 +64,13 @@ class MySqlRepository {
     }
   }
 
-  async delete(attributes) {
-    const filteredAttributes = this.__filterAttributes(attributes);
-    if (!filteredAttributes) {
-      return false
-    }
-
-    const sql = `delete from ${this.tableName} where ${filteredAttributes.join(' and ')}`
+  async deleteAll() {
+    const sql = `truncate ${this.tableName}`
     try {
       const db = await mysql.getConnection()
-      return await db.query(sql, attributes)
+      return await db.query(sql)
     } catch (error) {
-      throw new GeneralError(`failed deleting ${this.modelClass.name}`, error)
+      throw new GeneralError(`failed deleting all ${this.modelClass.name}`, error)
     }
   }
 
