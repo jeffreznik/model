@@ -64,6 +64,21 @@ class MySqlRepository {
     }
   }
 
+  async delete(attributes) {
+    const filteredAttributes = this.__filterAttributes(attributes);
+    if (!filteredAttributes) {
+      return false
+    }
+
+    const sql = `delete from ${this.tableName} where ${filteredAttributes.join(' and ')}`
+    try {
+      const db = await mysql.getConnection()
+      return await db.query(sql, attributes)
+    } catch (error) {
+      throw new GeneralError(`failed deleting ${this.modelClass.name}`, error)
+    }
+  }
+
   async __insert(model) {
     const namedParameters = this.modelClass.writableAttributes.map(attr => ':' + attr)
     const sql = `insert into ${this.tableName}
