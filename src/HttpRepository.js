@@ -28,6 +28,10 @@ class HttpRepository {
     }
   }
 
+  async findAll(raw = false) {
+    return await this.find(null, raw)
+  }
+
   async save(model) {
     try {
       if (model.id) {

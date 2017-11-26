@@ -20,11 +20,9 @@
     "babel-preset-stage-0": "^6.24.1"
   },
   "dependencies": {
-    "@jeffreznik/error": "^0.1.0",
+    "@jeffreznik/error": "file:../error",
+    "@jeffreznik/utils": "file:../utils",
     "http-status-codes": "^1.1.6",
     "validate.js": "^0.11.1"
-  },
-  "peerDependencies": {
-    "@jeffreznik/utils": "^0.2.0"
   }
 }

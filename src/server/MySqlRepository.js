@@ -8,7 +8,13 @@ class MySqlRepository {
   }
 
   async find(attributes, raw = false) {
-    const sql = `select * from ${this.tableName} where ${this.__filterAttributes(attributes).join(' and ')}`
+    let sql
+    if (attributes) {
+      sql = `select * from ${this.tableName} where ${this.__filterAttributes(attributes).join(' and ')}`
+    } else {
+      sql = `select * from ${this.tableName}`
+    }
+    
     try {
       const db = await mysql.getConnection()
       const [results] = await db.query(sql, attributes)
@@ -26,6 +32,10 @@ class MySqlRepository {
     } catch (error) {
       throw new GeneralError(`failed querying ${this.modelClass.name}`, error)
     }
+  }
+
+  async findAll(raw = false) {
+    return await this.find(null, raw)
   }
 
   async findOne(attributes, raw = false) {
