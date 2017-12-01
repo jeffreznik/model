@@ -85,22 +85,14 @@ class MySqlRepository {
   }
 
   async __insert(model) {
-    const namedParameters = this.modelClass.writableAttributes.map(attr => ':' + attr)
-    const sql = `insert into ${this.tableName}
-      (${this.modelClass.writableAttributes.join()}) values
-      (${namedParameters.join()})`
-
     const db = await mysql.getConnection()
-    const [result] = await db.query(sql, this.__convertValues(model))
+    const [result] = await db.query(getInsertStatement(), this.__convertValues(model))
     return result.insertId
   }
 
   async __update(model) {
-    const updateFields = this.modelClass.writableAttributes.map(attr => `${attr}=:${attr}`)
-    const sql = `update ${this.tableName} set ${updateFields.join()} where id=:id`
-
     const db = await mysql.getConnection()
-    const [result] = await db.query(sql, this.__convertValues(model))
+    const [result] = await db.query(getUpdateStatement(), this.__convertValues(model))
     return result.affectedRows
   }
 
@@ -113,6 +105,20 @@ class MySqlRepository {
         values[attr] = model[attr]
     }
     return values
+  }
+
+  getInsertStatement() {
+    const namedParameters = this.modelClass.writableAttributes.map(attr => ':' + attr)
+    const sql = `insert into ${this.tableName}
+      (${this.modelClass.writableAttributes.join()}) values
+      (${namedParameters.join()})`
+    return sql
+  }
+
+  getUpdateStatement() {
+    const updateFields = this.modelClass.writableAttributes.map(attr => `${attr}=:${attr}`)
+    const sql = `update ${this.tableName} set ${updateFields.join()} where id=:id`
+    return sql
   }
 }
 
