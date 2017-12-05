@@ -17,7 +17,7 @@ class MySqlRepository {
     
     try {
       const db = await mysql.getConnection()
-      const [results] = await db.query(sql, attributes)
+      const [results] = await db.execute(sql, attributes)
       return results.map(row => {
         for (const attr in row) {
           if (this.modelClass.defaultAttributes[attr] !== null && typeof this.modelClass.defaultAttributes[attr] === 'object') {
@@ -86,13 +86,13 @@ class MySqlRepository {
 
   async __insert(model) {
     const db = await mysql.getConnection()
-    const [result] = await db.query(getInsertStatement(), this.__convertValues(model))
+    const [result] = await db.execute(this.getInsertStatement(), this.__convertValues(model))
     return result.insertId
   }
 
   async __update(model) {
     const db = await mysql.getConnection()
-    const [result] = await db.query(getUpdateStatement(), this.__convertValues(model))
+    const [result] = await db.execute(this.getUpdateStatement(), this.__convertValues(model))
     return result.affectedRows
   }
 
